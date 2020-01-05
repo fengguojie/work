@@ -2,10 +2,13 @@ package com.srit.ecs.phone.service;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.srit.ecs.phone.entity.UserEntity;
 
 public interface LoginService {
+	
+	UserEntity getUserById(Integer id);
 
 	UserEntity getUserByName(String name);
 
@@ -17,7 +20,7 @@ public interface LoginService {
 	
 	void delete(Long id);
 
-	Map<String, Object> queryForPage(Page<UserEntity> page, Map<String, String> params);
+	JSONObject queryForPage(Page<UserEntity> page, Map<String, String> params);
 	
 
 }

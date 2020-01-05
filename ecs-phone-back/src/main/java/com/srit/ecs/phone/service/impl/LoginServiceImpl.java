@@ -1,6 +1,5 @@
 package com.srit.ecs.phone.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -20,7 +20,18 @@ public class LoginServiceImpl implements LoginService{
 	
 	 @Autowired
 	 UserMapper mapper;
-	
+	 
+	 @Override
+     public UserEntity getUserById(Integer id) {
+		EntityWrapper<UserEntity> queryWrapper = new EntityWrapper<UserEntity>();
+        queryWrapper.where(" id = "+id);
+        List<UserEntity> users = mapper.selectList(queryWrapper);
+        if (users != null && users.size() >= 1) {
+			return users.get(0);
+		}
+        return null;
+     }
+	 
 	 @Override
      public UserEntity getUserByName(String name) {
 		EntityWrapper<UserEntity> queryWrapper = new EntityWrapper<UserEntity>();
@@ -50,7 +61,7 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
 	public void update(UserEntity user) {
-		mapper.updateById(user);
+		mapper.updateAllColumnById(user);
 	}
 
 	@Override
@@ -59,15 +70,20 @@ public class LoginServiceImpl implements LoginService{
 	}
 	
 	@Override
-	public Map<String,Object> queryForPage(Page<UserEntity> page, Map<String, String> params) {
+	public JSONObject queryForPage(Page<UserEntity> page, Map<String, String> params) {
 		Wrapper<UserEntity> wrapper = new EntityWrapper<UserEntity>();
 		String name = params.get("userName");
 		if (name != null && !name.isEmpty()) {
-			wrapper.like("name", name);
+			wrapper.like("user_name", name);
 		}
+		String date = params.get("date");
+		if (date != null && !date.isEmpty()) {
+			wrapper.between("create_time", date+" 00:00:00", date+" 23:59:59");
+		}
+		wrapper.orderBy("id");
 		List<UserEntity> list = mapper.selectPage(page,wrapper);
 		Integer selectCount = mapper.selectCount(wrapper);
-		Map<String, Object> result = new HashMap<>();
+		JSONObject result = new JSONObject();
 		result.put("list", list);
 		result.put("count", selectCount);
 		return result;

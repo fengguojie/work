@@ -20,6 +20,9 @@ public class Result {
 		this.msg = msg;
 		this.data = data;
 	}
+	public static Result success() {
+		return new Result(0,"success",null);
+	}
 	
 	public static Result success(String msg) {
 		return new Result(0,msg,null);

@@ -23,7 +23,7 @@ public interface Constants {
     String PAGE_DETAILS_SORT_ORDER_DESC = "desc";
 
     String BEAN_PROPERTY_CREATE_BY = "createBy";
-    String BEAN_PROPERTY_CREATE_TIME = "createTime";
+    String BEAN_PROPERTY_CREATE_TIME = "id";
     String BEAN_PROPERTY_UPDATE_BY = "updateBy";
     String BEAN_PROPERTY_UPDATE_TIME = "updateTime";
     String BEAN_PROPERTY_STATE = "state";

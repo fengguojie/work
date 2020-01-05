@@ -15,33 +15,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-@TableName("jlm_user")
-public class UserEntity {
+@TableName("jlm_cash")
+public class CashEntity {
 	
-	public UserEntity() {}
-	
-	public UserEntity(Integer id, String name, String pw, String roles) {
-		this.id = id;
-		this.userName = name;
-		this.password = pw;
-		this.roles = roles;
-	}
-
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
 	
 	@TableField(value = "user_name")
     private String userName;
 	
-	@TableField(value = "real_name")
-    private String realName;
-	
-	@TableField(value = "password")
-    private String password;
+	@TableField(value = "user_id")
+    private Integer userId;
 
-	@TableField(value = "roles")
-    private String roles;
-    
 	@TableField(value = "state")
     private Integer state;
 	
@@ -53,8 +38,5 @@ public class UserEntity {
 	
 	@TableField(value = "create_time")
     private Date createtime;
-	
-	@TableField(value = "user_info")
-    private String userInfo;
 
 }
