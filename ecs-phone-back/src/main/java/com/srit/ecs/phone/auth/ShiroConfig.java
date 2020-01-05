@@ -44,6 +44,9 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> map = new HashMap<>();
+        map.put("/toIndex" , "anon");
+        map.put("/*.html" , "anon");
+        map.put("/static/**", "anon");
         map.put("/logout", "logout");
         map.put("/**", "authc");//对所有用户认证
         shiroFilterFactoryBean.setLoginUrl("/login");//登录

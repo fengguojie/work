@@ -1,23 +1,40 @@
 package com.srit.ecs.phone.entity;
 
-import java.util.Set;
+import java.util.Date;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
+@TableName("jlm_role")
 public class RoleEntity {
 	
-	public RoleEntity(String id, String roleName, Set<PermissionsEntity> permissionsSet) {
+	public RoleEntity() {}
+	
+	public RoleEntity(String id, String roleName) {
 		this.id = id;
 		this.roleName = roleName;
-		this.permissionSet = permissionsSet;
 	}
-
+	
+	@TableId(value = "id",type = IdType.AUTO)
 	private String id;
+	
+	@TableField(value = "role_name")
     private String roleName;
-    
-    private Set<PermissionsEntity> permissionSet;
+	
+	@TableField(value = "create_time")
+    private Date createtime;
+	
+	@TableField(value = "role_info")
+    private String userInfo;
+
 
 }
