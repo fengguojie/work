@@ -15,7 +15,7 @@ public interface Constants {
     String PRINCIPAL_USER_FULL_NAME = "fullName";
     String PRINCIPAL_DEPT_ID = "deptId";
 
-    String PAGE_DETAILS_PAGE_NUMBER = "pageNumber";
+    String PAGE_DETAILS_PAGE_NUMBER = "pageNum";
     String PAGE_DETAILS_PAGE_SIZE = "pageSize";
     String PAGE_DETAILS_SORT_NAME = "sortName";
     String PAGE_DETAILS_SORT_ORDER = "sortOrder";

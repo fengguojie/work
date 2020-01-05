@@ -19,7 +19,7 @@ public class UserEntity {
 	
 	public UserEntity() {}
 	
-	public UserEntity(String id, String name, String pw, String roles) {
+	public UserEntity(Integer id, String name, String pw, String roles) {
 		this.id = id;
 		this.userName = name;
 		this.password = pw;
@@ -27,7 +27,7 @@ public class UserEntity {
 	}
 
 	@TableId(value = "id",type = IdType.AUTO)
-	private String id;
+	private Integer id;
 	
 	@TableField(value = "user_name")
     private String userName;

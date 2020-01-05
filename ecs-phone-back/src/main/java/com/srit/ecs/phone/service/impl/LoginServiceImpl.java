@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.srit.ecs.phone.entity.UserEntity;
 import com.srit.ecs.phone.mapper.UserMapper;
 import com.srit.ecs.phone.service.LoginService;
@@ -30,35 +33,44 @@ public class LoginServiceImpl implements LoginService{
         return null;
      }
 
-     /**
-      * 模拟数据库查询
-      * @param userName
-      * @return
-      */
-     private UserEntity getMapByName(String userName){
-    	Map<String ,UserEntity> map = new HashMap<>();
-    	 
-//        PermissionsEntity permissions1 = new PermissionsEntity("1","query");
-//        PermissionsEntity permissions2 = new PermissionsEntity("2","add");
-//        Set<PermissionsEntity> permissionsSet = new HashSet<>();
-//        permissionsSet.add(permissions1);
-//        permissionsSet.add(permissions2);
-//        RoleEntity role = new RoleEntity("1","admin");
-//        Set<RoleEntity> roleSet = new HashSet<>();
-//        roleSet.add(role);
-        UserEntity user = new UserEntity("1","jellard","123456","1");
-        map.put(user.getUserName(), user);
+	 @Override
+	 public  UserEntity getCurUser() {
+		String name = (String)SecurityUtils.getSubject().getPrincipal();
+		if (name == null) {
+			return null;
+		}
+		UserEntity user = getUserByName(name);
+		return user;
+	 }
 
-//        PermissionsEntity permissions3 = new PermissionsEntity("3","query");
-//        Set<PermissionsEntity> permissionsSet1 = new HashSet<>();
-//        permissionsSet1.add(permissions3);
-//        RoleEntity role1 = new RoleEntity("2","normal");
-//        Set<RoleEntity> roleSet1 = new HashSet<>();
-//        roleSet1.add(role1);
-        UserEntity user1 = new UserEntity("2","qiangqiang","123456","2");
-        map.put(user1.getUserName(), user1);
-        
-        return map.get(userName);
-     }
+	@Override
+	public Integer save(UserEntity user) {
+		return mapper.insert(user);
+	}
+
+	@Override
+	public void update(UserEntity user) {
+		mapper.updateById(user);
+	}
+
+	@Override
+	public void delete(Long id) {
+		mapper.deleteById(id);
+	}
+	
+	@Override
+	public Map<String,Object> queryForPage(Page<UserEntity> page, Map<String, String> params) {
+		Wrapper<UserEntity> wrapper = new EntityWrapper<UserEntity>();
+		String name = params.get("userName");
+		if (name != null && !name.isEmpty()) {
+			wrapper.like("name", name);
+		}
+		List<UserEntity> list = mapper.selectPage(page,wrapper);
+		Integer selectCount = mapper.selectCount(wrapper);
+		Map<String, Object> result = new HashMap<>();
+		result.put("list", list);
+		result.put("count", selectCount);
+		return result;
+	}
 
 }

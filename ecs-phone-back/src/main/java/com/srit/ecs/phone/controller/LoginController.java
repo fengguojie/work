@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.srit.ecs.phone.entity.UserEntity;
 import com.srit.ecs.phone.service.LoginService;
 import com.srit.ecs.phone.vo.Result;
 
@@ -36,36 +37,29 @@ public class LoginController{
                 userName,password
         );
         Result result =  new Result();
-        JSONObject jsonObject = new JSONObject();
         try {
             subject.login(usernamePasswordToken);//进行验证，这里可以捕获异常，然后返回对应信息
-            jsonObject.put("errMsg", "login success");
-            result = Result.success(jsonObject);
+            result = Result.success("login success");
             //subject.checkRole("admin");
             //subject.checkPermissions("query", "add");
         } catch (AuthenticationException e) {
             log.error(e.getMessage());
-            jsonObject.put("errMsg", "账号密码错误");
-            result = Result.error(jsonObject);
+            result = Result.error("账号密码错误");
         }  catch (Exception e) {
         	log.error(e.getMessage());
-        	jsonObject.put("errMsg", "系统异常");
-        	result = Result.error(jsonObject);
+        	result = Result.error("系统异常");
 		}
         return result;
     }
-	
-    @RequiresRoles("admin")
-    @RequestMapping("/index")
-    public String index() {
-        return "hello index";
-    }
     
-    @RequiresRoles("normal")
-    //@RequiresPermissions("add")
-    @RequestMapping("/normal")
-    public String normal() {
-        return "hello normal";
+    @RequiresRoles("common")
+    @RequestMapping("/getUserInfo")
+    @ResponseBody
+    public Result getUserInfo() {
+    	UserEntity user = loginService.getCurUser();
+    	JSONObject jsonObject =  new JSONObject();
+    	jsonObject.put("user", user);
+        return Result.success(jsonObject);
     }
    
 	

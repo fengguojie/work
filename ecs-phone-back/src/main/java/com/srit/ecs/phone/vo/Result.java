@@ -21,13 +21,25 @@ public class Result {
 		this.data = data;
 	}
 	
+	public static Result success(String msg) {
+		return new Result(0,msg,null);
+	}
+	
 	public static Result success(JSONObject data) {
 		return new Result(0,"success",data);
 	}
 	
+	public static Result error(String msg) {
+		return new Result(1,msg,null);
+	}
+
 	public static Result error(JSONObject data) {
 		return new Result(1,"error",data);
 	}
+	
+	
+	
+	
 	
 	
 	
