@@ -63,5 +63,10 @@ public class CashServiceImpl implements CashService{
 		return result;
 	}
 
+	@Override
+	public CashEntity getCashById(Integer id) {
+		return mapper.selectById(id);
+	}
+
 
 }

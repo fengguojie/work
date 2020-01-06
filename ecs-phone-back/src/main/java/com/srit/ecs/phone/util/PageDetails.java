@@ -1,11 +1,14 @@
 package com.srit.ecs.phone.util;
 
-import org.springframework.data.domain.Sort;
-
 import java.io.Serializable;
 
+import org.springframework.data.domain.Sort;
+
 public class PageDetails implements Serializable {
-    private Integer pageNumber;
+    
+	private static final long serialVersionUID = 1L;
+	
+	private Integer pageNumber;
     private Integer pageSize;
     private String sortName;
     private Sort.Direction sortOrder;

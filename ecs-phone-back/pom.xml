@@ -33,7 +33,7 @@
 		<dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.14</version>
+            <version>1.16.14</version><!--$NO-MVN-MAN-VER$-->
             <scope>provided</scope>
         </dependency>
 		

@@ -2,10 +2,6 @@ package com.srit.ecs.phone.util;
 
 import java.util.Random;
 
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-
-import com.sun.tools.javac.file.JavacFileManager.MissingArchive;
-
 public class UserUtil {
 	
 	/*

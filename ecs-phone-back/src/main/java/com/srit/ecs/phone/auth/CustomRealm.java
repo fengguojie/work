@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.srit.ecs.phone.entity.RoleEntity;
 import com.srit.ecs.phone.entity.UserEntity;
-import com.srit.ecs.phone.mapper.RoleMapper;
 import com.srit.ecs.phone.service.LoginService;
 import com.srit.ecs.phone.service.RoleService;
 

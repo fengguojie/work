@@ -1,12 +1,12 @@
 package com.srit.ecs.phone.util;
 
-import com.srit.ecs.phone.util.Constants;
-
 import java.util.List;
 import java.util.Map;
 
 public class PrincipalUtils {
-    public static Map<String, Object> getPrincipal() {
+	
+    @SuppressWarnings("unchecked")
+	public static Map<String, Object> getPrincipal() {
         return (Map<String, Object>) SessionUtils.getAttribute(Constants.PRINCIPAL);
     }
 
@@ -36,19 +36,23 @@ public class PrincipalUtils {
         return (String) getPrincipal().get(Constants.PRINCIPAL_DEPT_ID);
     }
 
-    public static List<String> getPrincipalFuncs() {
+    @SuppressWarnings("unchecked")
+	public static List<String> getPrincipalFuncs() {
         return (List<String>) getPrincipal().get("funcs");
     }
 
-    public static List<String> getPrincipalRoutes() {
+    @SuppressWarnings("unchecked")
+	public static List<String> getPrincipalRoutes() {
         return (List<String>) getPrincipal().get("msrvs");
     }
 
-    public static List<String> getPrincipalEqpts() {
+    @SuppressWarnings("unchecked")
+	public static List<String> getPrincipalEqpts() {
         return (List<String>) getPrincipal().get("eqpts");
     }
 
-    public static List<String> getPrincipalMenus() {
+    @SuppressWarnings("unchecked")
+	public static List<String> getPrincipalMenus() {
         return (List<String>) getPrincipal().get("menus");
     }
 }

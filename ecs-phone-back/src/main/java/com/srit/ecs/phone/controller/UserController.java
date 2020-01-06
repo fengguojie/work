@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.omg.PortableServer.ServantManagerOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +16,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.srit.ecs.phone.entity.CashEntity;
 import com.srit.ecs.phone.entity.UserEntity;
+import com.srit.ecs.phone.enums.CashStateEnum;
+import com.srit.ecs.phone.enums.CashTypeEnum;
+import com.srit.ecs.phone.enums.UserStateEnum;
+import com.srit.ecs.phone.enums.UserTypeEnum;
 import com.srit.ecs.phone.service.CashService;
 import com.srit.ecs.phone.service.LoginService;
 import com.srit.ecs.phone.util.PageDetails;
@@ -34,26 +37,14 @@ public class UserController{
 	@Autowired
 	CashService cashService;
 	
-    @RequiresRoles("admin")
-    @RequestMapping("/list")
-    public Result list(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-        params.put("userName", request.getParameter("userName"));
-        params.put("date", request.getParameter("date"));
-        PageDetails pageDetails = PageDetailsUtils.getpPageDetails(request);
-        Page<UserEntity> page = new Page<>(pageDetails.getPageNumber(),pageDetails.getPageSize());
-        JSONObject result = loginService.queryForPage(page,params);
-        return Result.success(result);
-    }
-    
-    @RequiresRoles("admin")
+	@RequiresRoles("admin")
     @RequestMapping("/register")
     public Result register() {
     	String userName = UserUtil.getStringRandom(6);
     	String password = UserUtil.getStringRandom(8);
     	UserEntity user = new UserEntity();
-    	user.setState(1);
-    	user.setType(2);
+    	user.setState(UserStateEnum.OPEN.getCode());
+    	user.setType(UserTypeEnum.NORMAL.getCode());
     	user.setRoles("2,3");
     	user.setCreatetime(new Date());
     	user.setUserName(userName);
@@ -72,12 +63,24 @@ public class UserController{
     	jsonObject.put("password", user.getPassword());
         return Result.success(jsonObject);
     }
+	
+    @RequiresRoles("admin")
+    @RequestMapping("/list")
+    public Result list(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+        params.put("userName", request.getParameter("userName"));
+        params.put("date", request.getParameter("date"));
+        PageDetails pageDetails = PageDetailsUtils.getpPageDetails(request);
+        Page<UserEntity> page = new Page<>(pageDetails.getPageNumber(),pageDetails.getPageSize());
+        JSONObject result = loginService.queryForPage(page,params);
+        return Result.success(result);
+    }
     
     @RequiresRoles("admin")
     @RequestMapping("/close")
     public Result close(Integer userId) {
     	UserEntity user = loginService.getUserById(userId);
-        user.setState(2);
+        user.setState(UserStateEnum.CLOSE.getCode());
         loginService.update(user);
         return Result.success();
     }
@@ -90,7 +93,7 @@ public class UserController{
         if (type == null) {
 			return Result.error("type 不能为空");
 		}
-        if (type == 1) {
+        if (type == CashTypeEnum.up.getCode()) {
 			all = all.add(new BigDecimal(money));
 		}else {
 			if (all.doubleValue() < new BigDecimal(money).doubleValue()) {
@@ -103,13 +106,11 @@ public class UserController{
         CashEntity cashEntity = new CashEntity();
         cashEntity.setUserId(user.getId());
         cashEntity.setUserName(user.getUserName());
-        cashEntity.setState(1);
+        cashEntity.setState(CashStateEnum.HANDLE.getCode());
         cashEntity.setType(type);
         cashEntity.setMoney(new BigDecimal(money));
         cashEntity.setCreatetime(new Date());
         cashService.save(cashEntity);
         return Result.success();
     }
-    
-	
 }
