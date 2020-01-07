@@ -80,7 +80,7 @@ public class LoginServiceImpl implements LoginService{
 		if (date != null && !date.isEmpty()) {
 			wrapper.between("create_time", date+" 00:00:00", date+" 23:59:59");
 		}
-		wrapper.orderBy("id");
+		wrapper.orderBy("id",false);
 		List<UserEntity> list = mapper.selectPage(page,wrapper);
 		Integer selectCount = mapper.selectCount(wrapper);
 		JSONObject result = new JSONObject();

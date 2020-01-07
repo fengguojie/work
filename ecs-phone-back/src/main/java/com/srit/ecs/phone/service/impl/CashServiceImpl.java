@@ -54,7 +54,7 @@ public class CashServiceImpl implements CashService{
 		if (end != null && !end.isEmpty()) {
 			wrapper.lt("create_time", end+" 23:59:59");
 		}
-		wrapper.orderBy("id");
+		wrapper.orderBy("id",false);
 		List<CashEntity> list = mapper.selectPage(page,wrapper);
 		Integer selectCount = mapper.selectCount(wrapper);
 		JSONObject result = new JSONObject();

@@ -80,8 +80,10 @@ public class CashController{
         if (type == null || money == null) {
 			return Result.error("type或者money为空");
 		}
-        if (new BigDecimal(money).doubleValue() > user.getMoney().doubleValue()) {
-			return Result.error("提现金额不能大于账户总金额");
+        if (type == CashTypeEnum.Down.getCode()) {
+        	if (new BigDecimal(money).doubleValue() > user.getMoney().doubleValue()) {
+    			return Result.error("提现金额不能大于账户总金额");
+    		}
 		}
         CashEntity cashEntity = new CashEntity();
         cashEntity.setUserId(user.getId());
@@ -90,6 +92,7 @@ public class CashController{
         cashEntity.setType(type);
         cashEntity.setMoney(new BigDecimal(money));
         cashEntity.setCreatetime(new Date());
+        cashService.save(cashEntity);
         return Result.success();
     }
     
